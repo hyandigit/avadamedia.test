@@ -6,8 +6,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-var_dump(Yii::$app->user->isGuest);
-var_dump(Yii::$app->session->get('__id'));
+
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
