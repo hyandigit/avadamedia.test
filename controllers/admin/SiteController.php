@@ -1,7 +1,8 @@
 <?php
 
-namespace app\controllers;
+namespace app\controllers\admin;
 
+use app\models\RegisterForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -61,6 +62,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        if(Yii::$app->user->isGuest){
+            Yii::$app->response->redirect('/admin/site/login');
+        }
         return $this->render('index');
     }
 
@@ -85,6 +89,23 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+    /**
+     * Register action.
+     *
+     * @return Response|string
+     */
+    public function actionRegister()
+    {
+        $model = new RegisterForm();
+        if ($model->load(Yii::$app->request->post()) && $model->register()) {
+            Yii::$app->response->redirect('/admin/site/index');
+        }
+
+        $model->password = '';
+        return $this->render('register', [
+            'model' => $model,
+        ]);
+    }
 
     /**
      * Logout action.
@@ -95,7 +116,7 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
 
-        return $this->goHome();
+        Yii::$app->response->redirect('/admin/site/index');
     }
 
     /**

@@ -15,16 +15,27 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '3xlwjWdw0jH1lh6-q2bTbItxY-IXPi--',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
         ],
+        /*'response' => [
+            'format' => yii\web\Response::FORMAT_JSON,
+            'charset' => 'UTF-8',
+        ],*/
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+            'identityCookie' => [
+                'name' => '_identity',
+                'httpOnly' => true
+            ],
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => 'admin/site/error',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
@@ -43,14 +54,33 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
+            'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
+                'POST ticket/buy/<film:\d+>/<row:\d+>/<col:\d>' => 'ticket/buy',
+                'POST ticket/process-buy/<film:\d+>/<row:\d+>/<col:\d>' => 'ticket/process-buy',
+                'POST ticket/reserved/<film:\d+>/<row:\d+>/<col:\d>' => 'ticket/reserved',
+                'GET ticket/all/<film:\d+>' => 'ticket/all',
+                'admin/<controller>/<action>' => 'admin/<controller>/<action>',
+                '/' => 'admin/site/index'
             ],
         ],
-        */
+        /*'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app'
+                ],
+            ],
+        ],*/
+        'assetManager' => [
+            'bundles' => [
+                'dmstr\web\AdminLteAsset' => [
+                    'skin' => 'skin-black',
+                ],
+            ],
+        ],
     ],
     'params' => $params,
 ];

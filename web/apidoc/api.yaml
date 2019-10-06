@@ -1,0 +1,180 @@
+swagger: "2.0"
+info:
+  version: "v2"
+  title: "API"
+  description: "API"
+basePath: /
+schemes:
+  - http
+securityDefinitions:
+ basicAuth:
+   type: basic
+# To apply Basic auth to the whole API:
+security:
+  - basicAuth: []
+consumes:
+  - application/x-www-form-urlencoded
+produces:
+  - application/json
+tags:
+  - name: Ticket
+    description: Каталог товаров
+paths:
+  /ticket/all:
+    get:
+      summary: Купленые или забронированные билеты
+      description: Купленые или забронированные билеты
+      parameters:
+        - name: film
+          in: formData
+          require: true
+          type: integer
+          description: Идентификатор фильма
+      response:
+        200:
+          description: Положительный ответ (API отвечает успешно)
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                ID:
+                  type: integer
+                  example: 1
+                  descrition: Идентификатор
+                row:
+                  type: integer
+                  example: 1
+                  descrition: Ряд
+                col:
+                  type: integer
+                  example: 1
+                  descrition: Место
+                option:
+                  type: integer
+                  example: 1
+                  descrition: Состояние билета (Куплен/В процессе покупки/Забронирован)
+      tags:
+        - Ticket
+  /ticket/process-buy:
+    post:
+      summary: Зарезервировать билет
+      description: Зарезервировать билет для покупки, билет находится в блокировки до окончания времени блокировки или ответа от платежной системы
+      parameters:
+        - name: film
+          in: formData
+          require: true
+          type: integer
+          description: Идентификатор фильма
+        - name: row
+          in: formData
+          require: true
+          type: integer
+          description: Ряд
+        - name: col
+          in: formData
+          require: true
+          type: integer
+          description: Место
+      response:
+        default:
+          description: Ответ (API отвечает успешно)
+          schema:
+            type: object
+            properties:
+              status:
+                type: boolean
+                example: true
+                descrition: Статус выполнения
+              code:
+                type: integer
+                example: 200
+                descrition: Код результата
+              error:
+                type: string
+                example: Not found
+                descrition: Текст ошибки
+      tags:
+        - Ticket
+  /ticket/buy:
+    post:
+      summary: Купить билет
+      description: Отметить билет как купленный
+      parameters:
+        - name: film
+          in: formData
+          require: true
+          type: integer
+          description: Идентификатор фильма
+        - name: row
+          in: formData
+          require: true
+          type: integer
+          description: Ряд
+        - name: col
+          in: formData
+          require: true
+          type: integer
+          description: Место
+      response:
+        default:
+          description: Ответ (API отвечает успешно)
+          schema:
+            type: object
+            properties:
+              status:
+                type: boolean
+                example: true
+                descrition: Статус выполнения
+              code:
+                type: integer
+                example: 200
+                descrition: Код результата
+              error:
+                type: string
+                example: Not found
+                descrition: Текст ошибки
+      tags:
+        - Ticket
+  /ticket/reserved:
+    post:
+      summary: Забронировать билет
+      description: Забронировать билет
+      parameters:
+        - name: film
+          in: formData
+          require: true
+          type: integer
+          description: Идентификатор фильма
+        - name: row
+          in: formData
+          require: true
+          type: integer
+          description: Ряд
+        - name: col
+          in: formData
+          require: true
+          type: integer
+          description: Место
+      response:
+        default:
+          description: Ответ (API отвечает успешно)
+          schema:
+            type: object
+            properties:
+              status:
+                type: boolean
+                example: true
+                descrition: Статус выполнения
+              code:
+                type: integer
+                example: 200
+                descrition: Код результата
+              error:
+                type: string
+                example: Not found
+                descrition: Текст ошибки
+      tags:
+        - Ticket
+
+
